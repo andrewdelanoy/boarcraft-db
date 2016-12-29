@@ -12,7 +12,7 @@ DB_TITLE="v1.7 'The Scourge's Capital'"
 NEXT_MILESTONES="0.19 0.20"
 
 #internal use
-SCRIPT_FILE="InstallFullDB.sh"
+SCRIPT_FILE="InstallFullDB-custom.sh"
 CONFIG_FILE="InstallFullDB.config"
 
 # testing only
@@ -26,7 +26,9 @@ PASSWORD=""
 MYSQL=""
 CORE_PATH=""
 DEV_UPDATES="NO"
-FORCE_WAIT="YES"
+FORCE_WAIT="NO"
+
+BOARCRAFT_PATH="/home/mangos/run/bin"
 
 function create_config {
 # Re(create) config file
@@ -242,36 +244,41 @@ then
   echo
   echo
 
-  # Apply dbc folder
-  echo "> Trying to apply $CORE_PATH/sql/base/dbc/original_data ..."
-  for f in "$CORE_PATH/sql/base/dbc/original_data/"*.sql
-  do
-    echo "    Appending DBC file update `basename $f` to database $DATABASE"
-    $MYSQL_COMMAND < $f
-    if [[ $? != 0 ]]
-    then
-      echo "ERROR: cannot apply $f"
-      exit 1
-    fi
-  done
-  echo "  DBC datas successfully applied"
-  echo
-  echo
-  # Apply dbc changes (specific fixes to known wrong/missing data)
-  echo "> Trying to apply $CORE_PATH/sql/base/dbc/cmangos_fixes ..."
-  for f in "$CORE_PATH/sql/base/dbc/cmangos_fixes/"*.sql
-  do
-    echo "    Appending CMaNGOS DBC file fixes `basename $f` to database $DATABASE"
-    $MYSQL_COMMAND < $f
-    if [[ $? != 0 ]]
-    then
-      echo "ERROR: cannot apply $f"
-      exit 1
-    fi
-  done
-  echo "  DBC changes successfully applied"
-  echo
-  echo
+  if [ -e ${CORE_PATH}/sql/base/dbc ]
+  then
+    # Apply dbc folder
+    echo "> Trying to apply $CORE_PATH/sql/base/dbc/original_data ..."
+    for f in "$CORE_PATH/sql/base/dbc/original_data/"*.sql
+    do
+      echo "    Appending DBC file update `basename $f` to database $DATABASE"
+      $MYSQL_COMMAND < $f
+      if [[ $? != 0 ]]
+      then
+        echo "ERROR: cannot apply $f"
+        exit 1
+      fi
+    done
+    echo "  DBC datas successfully applied"
+    echo
+    echo
+    # Apply dbc changes (specific fixes to known wrong/missing data)
+    echo "> Trying to apply $CORE_PATH/sql/base/dbc/cmangos_fixes ..."
+    for f in "$CORE_PATH/sql/base/dbc/cmangos_fixes/"*.sql
+    do
+      echo "    Appending CMaNGOS DBC file fixes `basename $f` to database $DATABASE"
+      $MYSQL_COMMAND < $f
+      if [[ $? != 0 ]]
+      then
+        echo "ERROR: cannot apply $f"
+        exit 1
+      fi
+    done
+    echo "  DBC changes successfully applied"
+    echo
+    echo
+  else
+    echo "Folder $CORE_PATH/sql/base/dbc was not found."
+  fi
 
   # Apply scriptdev2.sql
   echo "> Trying to apply $CORE_PATH/sql/scriptdev2/scriptdev2.sql ..."
@@ -344,4 +351,13 @@ then
 fi
 echo "You have now a clean and recent Classic-DB database loaded into $DATABASE"
 echo "Enjoy using Classic-DB"
+echo
+
+# Apply custom Boarcraft modifications
+echo "Applying Boarcraft customizations..."
+$MYSQL_COMMAND < ${BOARCRAFT_PATH}/SQL/procedures.sql
+echo "Boarcraft stored procedures added."
+$MYSQL_COMMAND < ${BOARCRAFT_PATH}/SQL/custom_vanilla_db_lvl_10.sql
+echo "Boarcraft custom changes added."
+echo "You now have a clean Boarcraft DB!"
 echo
