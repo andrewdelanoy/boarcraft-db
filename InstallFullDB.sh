@@ -7,8 +7,8 @@
 ####################################################################################################
 
 # need to be changed on each official DB/CORE release
-FULLDB_FILE="ClassicDB_1_7_z2684.sql"
-DB_TITLE="v1.7 'The Scourge's Capital'"
+FULLDB_FILE="ClassicDB_1_8_z2692.sql"
+DB_TITLE="v1.8 'Lunar Festival'"
 NEXT_MILESTONES="0.19 0.20"
 
 #internal use
@@ -20,6 +20,7 @@ ADDITIONAL_PATH=""
 
 #variables assigned and read from $CONFIG_FILE
 DB_HOST="localhost"
+DB_PORT="3306"
 DATABASE=""
 USERNAME=""
 PASSWORD=""
@@ -36,6 +37,7 @@ cat >  $CONFIG_FILE << EOF
 #
 # You need to insert
 #   DB_HOST:      Host on which the database resides
+#   DB_PORT:      Port on which the database is running
 #   DATABASE:     Your database
 #   USERNAME:     Your username
 #   PASSWORD:     Your password
@@ -46,6 +48,9 @@ cat >  $CONFIG_FILE << EOF
 
 ## Define the host on which the mangos database resides (typically localhost)
 DB_HOST="localhost"
+
+## Define the port on which the mangos database is running (typically 3306)
++DB_PORT="3306"
 
 ## Define the database in which you want to add clean Classic-DB
 DATABASE="mangos"
@@ -91,7 +96,7 @@ fi
 
 . $CONFIG_FILE
 export MYSQL_PWD="$PASSWORD"
-MYSQL_COMMAND="$MYSQL -h$DB_HOST -u$USERNAME $DATABASE"
+MYSQL_COMMAND="$MYSQL -h$DB_HOST -P$DB_PORT -u$USERNAME $DATABASE"
 
 ## Print header
 echo
