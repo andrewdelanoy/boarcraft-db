@@ -29,7 +29,7 @@ CORE_PATH=""
 DEV_UPDATES="NO"
 FORCE_WAIT="NO"
 
-BOARCRAFT_PATH="/home/mangos/run/bin"
+BOARCRAFT_PATH="../run/"
 
 function create_config {
 # Re(create) config file
@@ -360,6 +360,17 @@ echo
 
 # Apply custom Boarcraft modifications
 echo "Applying Boarcraft customizations..."
+for f in "dbc/"*.sql
+do
+  echo "Importing `basename $f` to database $DATABASE"
+  $MYSQL_COMMAND < $f
+  if [[ $? != 0 ]]
+  then
+    echo "ERROR: cannot import $f"
+    exit 1
+  fi
+done
+echo "Customized DBC files were added as tables."
 $MYSQL_COMMAND < ${BOARCRAFT_PATH}/SQL/procedures.sql
 echo "Boarcraft stored procedures added."
 $MYSQL_COMMAND < ${BOARCRAFT_PATH}/SQL/custom_vanilla_db_lvl_10.sql
