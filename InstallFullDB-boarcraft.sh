@@ -375,5 +375,16 @@ $MYSQL_COMMAND < ${BOARCRAFT_PATH}/SQL/procedures.sql
 echo "Boarcraft stored procedures added."
 $MYSQL_COMMAND < ${BOARCRAFT_PATH}/SQL/custom_vanilla_db_lvl_10.sql
 echo "Boarcraft custom changes added."
+for f in ${BOARCRAFT_PATH}/SQL/dbc/*.sql
+do
+  echo "Importing `basename $f` to database $DATABASE"
+  $MYSQL_COMMAND < $f
+  if [[ $? != 0 ]]
+  then
+    echo "ERROR: cannot import $f"
+    exit 1
+  fi
+done
+echo "Custom DBC changes added."
 echo "You now have a clean Boarcraft DB!"
 echo
