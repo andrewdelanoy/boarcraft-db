@@ -29,7 +29,7 @@ CREATE TABLE `spell_item_enchantment_dbc` (
   `PrecastEffect` int(11) DEFAULT NULL,
   `CastingEffect` int(11) DEFAULT NULL,
   `TargetEffect` varchar(100) DEFAULT NULL,
-  `Buff` int(11) DEFAULT NULL,
+  `BuffDebuffEffect` int(11) DEFAULT NULL,
   `ChannelEffect` varchar(100) DEFAULT NULL,
   `HasMissile` varchar(100) DEFAULT NULL,
   `MissileEffect` int(11) DEFAULT NULL,
