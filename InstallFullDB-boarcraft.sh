@@ -29,7 +29,7 @@ CORE_PATH=""
 DEV_UPDATES="NO"
 FORCE_WAIT="NO"
 
-BOARCRAFT_PATH="../run/"
+BOARCRAFT_PATH="../run/bin/"
 
 function create_config {
 # Re(create) config file
