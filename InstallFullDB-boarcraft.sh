@@ -7,8 +7,8 @@
 ####################################################################################################
 
 # need to be changed on each official DB/CORE release
-FULLDB_FILE="ClassicDB_1_8_5_z2697.sql"
-DB_TITLE="v1.8.5 'Below Blackrock Mountain'"
+FULLDB_FILE="ClassicDB_1_9_0_z2717.sql"
+DB_TITLE="v1.9.0 'The Black Dragonflight'"
 NEXT_MILESTONES="0.19 0.20"
 
 #internal use
@@ -29,7 +29,7 @@ CORE_PATH=""
 DEV_UPDATES="NO"
 FORCE_WAIT="NO"
 
-BOARCRAFT_PATH="../run/bin/"
+BOARCRAFT_PATH=""
 
 function create_config {
 # Re(create) config file
@@ -38,13 +38,14 @@ cat >  $CONFIG_FILE << EOF
 # This is the config file for the '$SCRIPT_FILE' script
 #
 # You need to insert
-#   DB_HOST:      Host on which the database resides
-#   DB_PORT:      Port on which the database is running
-#   DATABASE:     Your database
-#   USERNAME:     Your username
-#   PASSWORD:     Your password
-#   CORE_PATH:    Your path to core's directory (OPTIONAL: Use if you want to apply remaining core updates automatically)
-#   MYSQL:        Your mysql command (usually mysql)
+#   DB_HOST:        Host on which the database resides
+#   DB_PORT:        Port on which the database is running
+#   DATABASE:       Your database
+#   USERNAME:       Your username
+#   PASSWORD:       Your password
+#   CORE_PATH:      Your path to core's directory (OPTIONAL: Use if you want to apply remaining core updates automatically)
+#   MYSQL:          Your mysql command (usually mysql)
+#   BOARCRAFT_PATH: Your path to the Boarcraft server folder containing custom SQL and DBC changes
 #
 ####################################################################################################
 
@@ -70,11 +71,20 @@ CORE_PATH=""
 ## Define your mysql programm if this differs
 MYSQL="mysql"
 
+## Define if you want to wait a bit before applying the full database
+FORCE_WAIT="YES"
+
 ## Define if the 'dev' directory for processing development SQL files needs to be used
 ##   Set the variable to "YES" to use the dev directory
 DEV_UPDATES="NO"
 
 # Enjoy using the tool
+
+## - Boarcraft specific configs -
+
+## Define the path to the Boarcraft server folder
+## This is used to locate and apply custom SQL and DBC changes.
+BOARCRAFT_PATH="" 
 EOF
 }
 
@@ -111,7 +121,7 @@ then
   echo "Please bring your repositories up-to-date!"
   echo "Press CTRL+C to exit"
   # show a mini progress bar
-  for i in {1..19}
+  for i in {1..10}
   do
    echo -ne .
    sleep 1
