@@ -385,6 +385,7 @@ $MYSQL_COMMAND < ${BOARCRAFT_PATH}/SQL/procedures.sql
 echo "Boarcraft stored procedures added."
 $MYSQL_COMMAND < ${BOARCRAFT_PATH}/SQL/custom_vanilla_db_lvl_10.sql
 echo "Boarcraft custom changes added."
+$MYSQL_COMMAND < ${BOARCRAFT_PATH}/SQL/create_questgiver_kharanos.sql
 for f in ${BOARCRAFT_PATH}/SQL/dbc/*.sql
 do
   echo "Importing `basename $f` to database $DATABASE"
